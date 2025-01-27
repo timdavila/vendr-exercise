@@ -122,8 +122,8 @@ function Wizard() {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <Card className="w-[500px] mt-[100px]">
+    <div className="flex flex-col items-center p-[20px]">
+      <Card className="w-full sm:w-[500px] mt-[100px]">
         <Tabs value={currentStep} className="w-large">
           <TabsContent value="basic">
             <CardHeader>

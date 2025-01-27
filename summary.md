@@ -12,6 +12,9 @@ All user supplied data is held in one `formData` object. This way we have one so
 Each form step has its own validation logic. If validation fails, the user is prevented from proceeding. In the current implementation, error messages are shown in an alert dialog. If I had more time, I would highlight the specific form field that has an error (e.g., a red border around the email field) and display user friendly error messages inline with the form rather than in the alert.
 
 ## Potential Improvements
+* Testing: Unit and integration tests
+* Logging and error handling: Set up error boundaries and reporting of any exceptions
+* Validation abstraction: I would make validators that were more generic and reusable and import them instead of including them in the Wizard logic.
 * Internationalization (i18n): The wizard could be extended to support multiple languages.
 * ADA Compliance: Adding accessibility features, such as better keyboard navigation and screen reader support, would make the wizard more inclusive.
 * Persistence (LocalStorage): To improve the user experience, I would store the wizard state in localStorage so that if the user closes the window and returns later, their progress is saved and can be continued from where they left off.

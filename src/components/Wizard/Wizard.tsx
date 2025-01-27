@@ -1,28 +1,16 @@
-import React, { SyntheticEvent } from 'react';
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList } from "../ui/tabs"
+import React, { useState, SyntheticEvent } from 'react';
+import { Tabs, TabsContent } from "../ui/tabs"
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Checkbox } from '../ui/checkbox';
+import { Progress } from '../ui/progress';
+import { FormData, Feature, progressForStep} from './Wizard.helpers';
 
-type FormData = {
-  name: string;
-  email: string;
-  role: string;
-  companyName: string;
-  companySize: string;
-  features: Feature[]
-};
-type Feature = {
-  key: string;
-  description: string;
-  selected: boolean;
-};
 function Wizard() {
-  const [currentStep, setCurrentStep] = useState("basic");
+  const [currentStep, setCurrentStep] = useState("personal"); // one of personal, company, features, complete
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -31,6 +19,7 @@ function Wizard() {
     companySize: '',
     features: []
   });
+
 
   const handleChange = (e: SyntheticEvent) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -88,13 +77,16 @@ function Wizard() {
     const isFormValid = 
       formData.name &&
       formData.role &&
-      formData.email &&
-      /(.+)@(.+){2,}\.(.+){2,}/.test(formData.email);
-    
+      formData.email;
     if (!isFormValid) {
       alert("All fields are required");
       return;
     }
+    if (!/(.+)@(.+){2,}\.(.+){2,}/.test(formData.email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+    
     setCurrentStep("company");
   }
 
@@ -113,11 +105,12 @@ function Wizard() {
 
   const handleStep3Submit = (e: SyntheticEvent) => {
     e.preventDefault();
-    const isFormValid = 
-      formData.companyName &&
-      formData.companySize;
+    const isFormValid = formData.features.filter((feature) => feature.selected).length;
     
-    if (!isFormValid) return;
+    if (!isFormValid) {
+      alert("Please choose at least one feature");
+      return;
+    }
     setCurrentStep("complete");
   }
 
@@ -125,7 +118,8 @@ function Wizard() {
     <div className="flex flex-col items-center p-[20px]">
       <Card className="w-full sm:w-[500px] mt-[100px]">
         <Tabs value={currentStep} className="w-large">
-          <TabsContent value="basic">
+          <Progress value={progressForStep(currentStep)} />
+          <TabsContent value="personal">
             <CardHeader>
               <CardTitle>Your Information</CardTitle>
               <CardDescription>First, let's get to know you.</CardDescription>
@@ -134,7 +128,7 @@ function Wizard() {
               <CardContent>
                   <div className="grid w-full items-center gap-4">
                     <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="name">Name</Label>
+                      <Label htmlFor="name">Name*</Label>
                       <Input 
                         id="name"
                         name="name"
@@ -145,7 +139,7 @@ function Wizard() {
                       />
                     </div>
                     <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">Email*</Label>
                       <Input
                         id="email"
                         name="email"
@@ -157,7 +151,7 @@ function Wizard() {
                       />
                     </div>
                     <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="role">Role</Label>
+                      <Label htmlFor="role">Role*</Label>
                       <Input
                         id="role"
                         name="role"
@@ -183,7 +177,7 @@ function Wizard() {
               <CardContent>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="companyName">Company Name</Label>
+                    <Label htmlFor="companyName">Company Name*</Label>
                     <Input 
                       id="companyName"
                       name="companyName"
@@ -194,7 +188,7 @@ function Wizard() {
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="companySize">Company Size</Label>
+                    <Label htmlFor="companySize">Company Size*</Label>
                     <Select
                       name="companySize"
                       value={formData.companySize}
@@ -213,7 +207,7 @@ function Wizard() {
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between">
-                  <Button variant="outline" onClick={() => setCurrentStep("basic")}>Back</Button>
+                  <Button variant="outline" onClick={() => setCurrentStep("personal")}>Back</Button>
                   <Button type="submit">Next</Button>
               </CardFooter>
             </form>

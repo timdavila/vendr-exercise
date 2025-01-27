@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Hosted Version
+
+The latest commit to `main` is also hosted at [https://vendr.timdavila.com](https://vendr.timdavila.com)
+
 ## Available Scripts
 
 In the project directory, you can run:

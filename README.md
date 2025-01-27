@@ -1,4 +1,5 @@
 # Hello Vendr!
+My thoughts and documentation on this coding exercise are [here](summary.md)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

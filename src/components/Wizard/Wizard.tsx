@@ -215,7 +215,7 @@ function Wizard() {
           <TabsContent value="features">
             <CardHeader>
               <CardTitle>Features and Tools</CardTitle>
-              <CardDescription>Which of these interest you?</CardDescription>
+              <CardDescription>Which of these interest you?*</CardDescription>
             </CardHeader>
             <form onSubmit={handleStep3Submit}>
               <CardContent>
